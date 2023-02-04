@@ -1,25 +1,59 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import { useAuth } from "./contexts/AuthContext";
+import LocationsPage from "./pages/LocationsPage";
+import SettingsPage from "./pages/SettingsPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+
+import "./App.css";
+
+const loggedInRoutes = [
+  {
+    path: "/locations",
+    element: <LocationsPage />,
+  },
+  {
+    path: "/settings",
+    element: <SettingsPage />,
+  },
+  {
+    path: "/*",
+    element: <Navigate to="/locations" />,
+  },
+];
+
+const notLoggedInRoutes = [
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/signup",
+    element: <SignupPage />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: "/*",
+    element: <Navigate to="/login" />,
+  },
+];
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  const { currentUser } = useAuth();
+
+  const router = createBrowserRouter(
+    !currentUser ? notLoggedInRoutes : loggedInRoutes
   );
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;
