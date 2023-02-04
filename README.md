@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Blind Assistant
 
 https://blind-assistant.netlify.app
 
